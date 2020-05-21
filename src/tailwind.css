@@ -16,3 +16,7 @@
 .custom-scrollbar::-webkit-scrollbar-track {
     background: #edf2f7;
 }
+
+body {
+    background-color: #EAECF2;
+}
