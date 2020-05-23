@@ -22,7 +22,7 @@ const Question = ({ question, trackSelectedAnswer, submittedAnswer }) => {
                 {
                     answers.map((answer, index) => (
                         <li key={index} className={cx("bg-white rounded-lg border-2 border-gray-300 px-6 py-4 my-4 text-base cursor-pointer hover:border-gray-600", {
-                            "bg-gray-300": answer === submittedAnswer
+                            "bg-gray-300 border-gray-600": answer === submittedAnswer
                         })} onClick={() => handleSelectAnswer(answer)}>
                             {decodeURIComponent(answer)}
                         </li>
