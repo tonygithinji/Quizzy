@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import cx from 'classnames';
 import { AppContext } from '../app/Context';
 import axios from '../utils/axios';
 import Question from '../components/Question';
@@ -17,7 +18,6 @@ const Questions = () => {
         isGrading: false,
         isCorrectAnswer: false
     });
-
     const history = useHistory();
 
     useEffect(() => {
@@ -86,15 +86,16 @@ const Questions = () => {
                         <div className="mt-8 flex">
                             <button className="border-2 border-gray-400 px-4 py-2 rounded-lg text-gray-800 focus:outline-none  hover:border-gray-600" onClick={handleEndGame}>I've had enough</button>
                             <div className="flex-1"></div>
-                            {submittedAnswer && !gradeQuestion.isGrading && (
-                                <button className="border-2 border-gray-400 px-4 py-2 rounded-lg text-gray-800 flex focus:outline-none hover:border-gray-600" onClick={handleGradeQuestion}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path className="heroicon-ui" d="M18.59 13H3a1 1 0 0 1 0-2h15.59l-5.3-5.3a1 1 0 1 1 1.42-1.4l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.42-1.4l5.3-5.3z" /></svg>
-                                </button>
-                            )}
+                            <button className={cx("border-2 border-gray-400 px-4 py-2 rounded-lg text-gray-800 flex focus:outline-none hover:border-gray-600", {
+                                "transform": submittedAnswer && !gradeQuestion.isGrading,
+                                "pre-transform": submittedAnswer === "" || gradeQuestion.isGrading
+                            })} onClick={handleGradeQuestion}>
+                                <svg viewBox="0 0 24 24" width="24" height="24"><path className="heroicon-ui" d="M18.59 13H3a1 1 0 0 1 0-2h15.59l-5.3-5.3a1 1 0 1 1 1.42-1.4l7 7a1 1 0 0 1 0 1.4l-7 7a1 1 0 0 1-1.42-1.4l5.3-5.3z" /></svg>
+                            </button>
                             {gradeQuestion.isGrading && (
                                 <button className="border-2 border-gray-400 px-4 py-2 rounded-lg text-gray-800 flex focus:outline-none hover:border-gray-600" onClick={handleNextQuestion}>
                                     <span>Next Question</span>
-                                    <svg style={{ marginTop: 1 }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="22" height="22"><path className="heroicon-ui" d="M9.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z" /></svg>
+                                    <svg style={{ marginTop: 1 }} viewBox="0 0 22 22" width="22" height="22"><path className="heroicon-ui" d="M9.3 8.7a1 1 0 0 1 1.4-1.4l4 4a1 1 0 0 1 0 1.4l-4 4a1 1 0 0 1-1.4-1.4l3.29-3.3-3.3-3.3z" /></svg>
                                 </button>
                             )}
                         </div>

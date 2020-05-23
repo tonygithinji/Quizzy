@@ -20,3 +20,14 @@
 body {
     background-color: #EAECF2;
 }
+
+.transform {
+    opacity: 1;
+    transform: translate(0px, 0px);
+    transition: all 1s;
+}
+
+.pre-transform {
+    opacity: 0;
+    transform: translate(0px, 20px);
+}
