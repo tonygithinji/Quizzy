@@ -4,6 +4,7 @@ import { AppContext } from '../app/Context';
 import axios from '../utils/axios';
 import Question from '../components/Question';
 import QuestionGrader from '../components/QuestionGrader';
+import Loader from '../components/Loader';
 
 const Questions = () => {
     const { category } = useContext(AppContext);
@@ -76,7 +77,7 @@ const Questions = () => {
                 <div>Points: <b>{points}</b></div>
             </div>
             <div className="mb-4 bg-white rounded-lg border-2 border-gray-300 px-6 py-8">
-                {loading && <div>Loading...</div>}
+                {loading && <Loader />}
                 {!loading && activeQuestion && (
                     <div>
                         {!gradeQuestion.isGrading && <Question question={activeQuestion} trackSelectedAnswer={handleSelectedAnswer} submittedAnswer={submittedAnswer} />}

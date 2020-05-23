@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../utils/axios';
 import CategorySelector from '../components/CategorySelector';
+import Loader from '../components/Loader';
 
 const Home = () => {
     const [categories, setCategories] = useState([]);
@@ -23,7 +24,7 @@ const Home = () => {
                 <h3 className="text-xl m-4">Pick a category and let's find out!</h3>
             </div>
 
-            {loading && <div className="text-center mt-8">Loading...</div>}
+            {loading && <Loader />}
             {!loading && categories.length > 0 && (
                 <div className="grid grid-cols-4 gap-4 my-12">
                     {categories.map(category => <CategorySelector key={category.id} category={category.name} categoryId={category.id} />)}
