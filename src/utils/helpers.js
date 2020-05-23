@@ -53,3 +53,13 @@ const imagesMap = {
 export const getCategoryIcon = id => {
     return imagesMap[id] || "";
 };
+
+export const shuffleAnswers = answers => {
+    for (let i = answers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * i)
+        const temp = answers[i]
+        answers[i] = answers[j]
+        answers[j] = temp
+    }
+    return answers;
+}

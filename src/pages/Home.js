@@ -4,11 +4,14 @@ import CategorySelector from '../components/CategorySelector';
 
 const Home = () => {
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         axios.get('api_category.php').then(response => {
             const { data } = response;
             setCategories(data.trivia_categories);
+            setLoading(false);
         });
     }, []);
 
@@ -20,10 +23,12 @@ const Home = () => {
                 <h3 className="text-xl m-4">Pick a category and let's find out!</h3>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 my-12">
-                {categories.map(category => <CategorySelector key={category.id} category={category.name} categoryId={category.id} />)}
-
-            </div>
+            {loading && <div className="text-center mt-8">Loading...</div>}
+            {!loading && categories.length > 0 && (
+                <div className="grid grid-cols-4 gap-4 my-12">
+                    {categories.map(category => <CategorySelector key={category.id} category={category.name} categoryId={category.id} />)}
+                </div>
+            )}
         </>
     )
 };
