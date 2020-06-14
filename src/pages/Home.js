@@ -21,6 +21,10 @@ const Home = () => {
             setCategories(data.trivia_categories);
             setLoading(false);
         });
+        try {
+            localStorage.removeItem("quizzy");
+            localStorage.removeItem("quizzy_points");
+        } catch (error) { }
     }, []);
 
     return (

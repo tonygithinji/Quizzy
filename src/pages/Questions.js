@@ -2,16 +2,17 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import cx from 'classnames';
 import { AppContext } from '../app/Context';
-import axios from '../utils/axios';
+// import axios from '../utils/axios';
 import Question from '../components/Question';
 import QuestionGrader from '../components/QuestionGrader';
 import Loader from '../components/Loader';
+import useFetchQuestions from '../hooks/useFetchQuestions';
 
 const Questions = () => {
-    const { category } = useContext(AppContext);
-    const [questions, setQuestions] = useState([]);
-    const [activeQuestion, setActiveQuestion] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const { category, setCurrentCategory } = useContext(AppContext);
+    // const [questions, setQuestions] = useState([]);
+    // const [activeQuestion, setActiveQuestion] = useState(null);
+    // const [loading, setLoading] = useState(false);
     const [points, setPoints] = useState(0);
     const [submittedAnswer, setSubmittedAnswer] = useState("");
     const [gradeQuestion, setGradeQuestion] = useState({
@@ -20,24 +21,51 @@ const Questions = () => {
     });
     const history = useHistory();
 
+    const [loading, questions, activeQuestion, updateQuestions, updateActiveQuestion] = useFetchQuestions(category.id);
+
+    // useEffect(() => {
+    //     try {
+    //         const quizzyCategory = localStorage.getItem("quizzy");
+
+    //         if (quizzyCategory) {
+    //             const quizzyCategoryObj = JSON.parse(quizzyCategory);
+    //             setCurrentCategory({ id: quizzyCategoryObj.categoryId, name: quizzyCategoryObj.categoryName });
+    //         } else {
+    //             localStorage.setItem("quizzy", JSON.stringify({ categoryId: category.id, categoryName: category.name }));
+    //         }
+    //     } catch (error) { }
+    // }, [category.id]);
+
+    // useEffect(() => {
+    //     if (questions.length <= 4) {
+    //         if (questions.length === 0) setLoading(true);
+    //         axios.get(`api.php?amount=10&category=${category.id}&encode=url3986`).then(response => {
+    //             const { data } = response;
+
+    //             if (questions.length === 0) {
+    //                 const activeQuestion = data.results.splice(0, 1);
+    //                 setQuestions(prevState => [...prevState, ...data.results]);
+    //                 setActiveQuestion(activeQuestion[0]);
+    //             } else {
+    //                 setQuestions(prevState => [...prevState, ...data.results]);
+    //             }
+    //             setLoading(false);
+    //         });
+    //     }
+    // }, [questions.length, category.id]);
+
     useEffect(() => {
-        if (questions.length <= 4) {
-            if (questions.length === 0) setLoading(true);
-            axios.get(`api.php?amount=10&category=${category.id}&encode=url3986`).then(response => {
-                const { data } = response;
+        try {
+            const quizzyPoints = localStorage.getItem("quizzy_points");
+            if (quizzyPoints) setPoints(Number.parseInt(quizzyPoints));
+        } catch (error) { }
+    }, []);
 
-
-                if (questions.length === 0) {
-                    const activeQuestion = data.results.splice(0, 1);
-                    setQuestions(prevState => [...prevState, ...data.results]);
-                    setActiveQuestion(activeQuestion[0]);
-                } else {
-                    setQuestions(prevState => [...prevState, ...data.results]);
-                }
-                setLoading(false);
-            });
-        }
-    }, [questions.length]);
+    useEffect(() => {
+        try {
+            localStorage.setItem("quizzy_points", points);
+        } catch (error) { }
+    }, [points]);
 
     const handleSelectedAnswer = answer => {
         setSubmittedAnswer(answer);
@@ -56,8 +84,8 @@ const Questions = () => {
 
     const handleNextQuestion = () => {
         const activeQuestion = questions.splice(0, 1);
-        setQuestions(questions);
-        setActiveQuestion(activeQuestion[0]);
+        updateQuestions(questions);
+        updateActiveQuestion(activeQuestion[0]);
         setSubmittedAnswer("");
         setGradeQuestion({ isGrading: false, isCorrectAnswer: false });
     };
